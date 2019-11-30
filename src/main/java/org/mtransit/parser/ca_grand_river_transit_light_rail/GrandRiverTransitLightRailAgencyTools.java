@@ -1,20 +1,14 @@
 package org.mtransit.parser.ca_grand_river_transit_light_rail;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
-
 import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.DefaultAgencyTools;
+import org.mtransit.parser.MTLog;
 import org.mtransit.parser.Pair;
 import org.mtransit.parser.SplitUtils;
 import org.mtransit.parser.SplitUtils.RouteTripSpec;
 import org.mtransit.parser.Utils;
 import org.mtransit.parser.gtfs.data.GCalendar;
 import org.mtransit.parser.gtfs.data.GCalendarDate;
-import org.mtransit.parser.gtfs.data.GRoute;
 import org.mtransit.parser.gtfs.data.GSpec;
 import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.gtfs.data.GTrip;
@@ -24,6 +18,12 @@ import org.mtransit.parser.mt.data.MRoute;
 import org.mtransit.parser.mt.data.MTrip;
 import org.mtransit.parser.mt.data.MTripStop;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+
 // https://www.regionofwaterloo.ca/en/regionalgovernment/OpenDataHome.asp
 // https://www.grt.ca/en/about-grt/open-data.aspx
 // https://www.regionofwaterloo.ca/opendatadownloads/GRT_GTFS.zip
@@ -31,10 +31,15 @@ public class GrandRiverTransitLightRailAgencyTools extends DefaultAgencyTools {
 
 	public static void main(String[] args) {
 		if (args == null || args.length == 0) {
-			args = new String[3];
-			args[0] = "input/gtfs.zip";
-			args[1] = "../../mtransitapps/ca-grand-river-transit-light-rail-android/res/raw/";
-			args[2] = ""; // files-prefix
+			args = new String[4];
+			args[0] = "agency-parser/"
+					+ "input/gtfs.zip"; // "input/gtfs_next.zip"; //
+			args[1] = "app-android" // "../app-android"
+					+ "/src/main/"
+					+ "res-current/" // "res-next/"
+					+ "raw/";
+			args[2] = "current_"; // "next_";
+			args[3] = ""; // FALSE
 		}
 		new GrandRiverTransitLightRailAgencyTools().start(args);
 	}
@@ -43,11 +48,11 @@ public class GrandRiverTransitLightRailAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public void start(String[] args) {
-		System.out.printf("\nGenerating Grand River Transit light rail data...");
+		MTLog.log("Generating Grand River Transit light rail data...");
 		long start = System.currentTimeMillis();
-		this.serviceIds = extractUsefulServiceIds(args, this);
+		this.serviceIds = extractUsefulServiceIds(args, this, true);
 		super.start(args);
-		System.out.printf("\nGenerating Grand River Transit light rail data... DONE in %s.\n", Utils.getPrettyDuration(System.currentTimeMillis() - start));
+		MTLog.log("Generating Grand River Transit light rail data... DONE in %s.", Utils.getPrettyDuration(System.currentTimeMillis() - start));
 	}
 
 	@Override
@@ -92,8 +97,10 @@ public class GrandRiverTransitLightRailAgencyTools extends DefaultAgencyTools {
 	}
 
 	private static HashMap<Long, RouteTripSpec> ALL_ROUTE_TRIPS2;
+
 	static {
-		HashMap<Long, RouteTripSpec> map2 = new HashMap<Long, RouteTripSpec>();
+		//noinspection UnnecessaryLocalVariable
+		HashMap<Long, RouteTripSpec> map2 = new HashMap<>();
 		ALL_ROUTE_TRIPS2 = map2;
 	}
 
@@ -137,8 +144,7 @@ public class GrandRiverTransitLightRailAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
-		System.out.printf("\nUnepected trips to merge %s & %s\n", mTrip, mTripToMerge);
-		System.exit(-1);
+		MTLog.logFatal("Unexpected trips to merge %s & %s", mTrip, mTripToMerge);
 		return false;
 	}
 
