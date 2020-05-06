@@ -1,5 +1,7 @@
 package org.mtransit.parser.ca_grand_river_transit_light_rail;
 
+import java.util.Arrays;
+
 import org.mtransit.parser.CleanUtils;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.MTLog;
@@ -144,6 +146,29 @@ public class GrandRiverTransitLightRailAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public boolean mergeHeadsign(MTrip mTrip, MTrip mTripToMerge) {
+		List<String> headsignsValues = Arrays.asList(mTrip.getHeadsignValue(), mTripToMerge.getHeadsignValue());
+		if (mTrip.getRouteId() == 3011L) {
+			if (Arrays.asList( //
+					"Grand River Hosp Sta", // <>
+					"Kitchener Mkt Sta", // <>
+					"Northfield Sta", //
+					"Waterloo Public Sq Sta", //
+					"Fairway Sta" //
+					).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Fairway Sta", mTrip.getHeadsignId());
+				return true;
+			}
+			if (Arrays.asList( //
+					"Grand River Hosp Sta", // <>
+					"Kitchener Mkt Sta", // <>
+					"Laurier-Waterloo Pk Sta", //
+					"Mill Sta", //
+					"Conestoga Sta" //
+					).containsAll(headsignsValues)) {
+				mTrip.setHeadsignString("Conestoga Sta", mTrip.getHeadsignId());
+				return true;
+			}
+		}
 		MTLog.logFatal("Unexpected trips to merge %s & %s", mTrip, mTripToMerge);
 		return false;
 	}
