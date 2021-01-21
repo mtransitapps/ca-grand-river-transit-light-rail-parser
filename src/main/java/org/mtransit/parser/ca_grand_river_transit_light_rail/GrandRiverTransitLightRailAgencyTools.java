@@ -14,9 +14,7 @@ import org.mtransit.parser.mt.data.MAgency;
 import org.mtransit.parser.mt.data.MRoute;
 import org.mtransit.parser.mt.data.MTrip;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 
 // https://www.regionofwaterloo.ca/en/regionalgovernment/OpenDataHome.asp
@@ -106,30 +104,12 @@ public class GrandRiverTransitLightRailAgencyTools extends DefaultAgencyTools {
 	}
 
 	@Override
+	public boolean directionFinderEnabled() {
+		return true;
+	}
+
+	@Override
 	public boolean mergeHeadsign(@NotNull MTrip mTrip, @NotNull MTrip mTripToMerge) {
-		List<String> headsignsValues = Arrays.asList(mTrip.getHeadsignValue(), mTripToMerge.getHeadsignValue());
-		if (mTrip.getRouteId() == 3011L) {
-			if (Arrays.asList( //
-					"Grand River Hosp Sta", // <>
-					"Kitchener Mkt Sta", // <>
-					"Northfield Sta", //
-					"Waterloo Public Sq Sta", //
-					"Fairway Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Fairway Sta", mTrip.getHeadsignId());
-				return true;
-			}
-			if (Arrays.asList( //
-					"Grand River Hosp Sta", // <>
-					"Kitchener Mkt Sta", // <>
-					"Laurier-Waterloo Pk Sta", //
-					"Mill Sta", //
-					"Conestoga Sta" //
-			).containsAll(headsignsValues)) {
-				mTrip.setHeadsignString("Conestoga Sta", mTrip.getHeadsignId());
-				return true;
-			}
-		}
 		throw new MTLog.Fatal("Unexpected trips to merge %s & %s", mTrip, mTripToMerge);
 	}
 
