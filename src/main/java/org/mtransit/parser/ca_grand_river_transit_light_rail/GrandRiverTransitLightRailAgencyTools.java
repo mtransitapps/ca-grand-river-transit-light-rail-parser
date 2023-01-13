@@ -9,7 +9,7 @@ import org.mtransit.parser.mt.data.MAgency;
 
 import java.util.Locale;
 
-// https://www.regionofwaterloo.ca/en/regionalgovernment/OpenDataHome.asp
+// https://www.regionofwaterloo.ca/en/regional-government/open-data.aspx
 // https://www.grt.ca/en/about-grt/open-data.aspx
 // https://www.regionofwaterloo.ca/opendatadownloads/GRT_GTFS.zip
 public class GrandRiverTransitLightRailAgencyTools extends DefaultAgencyTools {
