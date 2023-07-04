@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.mtransit.commons.CleanUtils;
 import org.mtransit.parser.DefaultAgencyTools;
 import org.mtransit.parser.gtfs.data.GRoute;
+import org.mtransit.parser.gtfs.data.GRouteType;
 import org.mtransit.parser.gtfs.data.GStop;
 import org.mtransit.parser.mt.data.MAgency;
 
@@ -27,6 +28,12 @@ public class GrandRiverTransitLightRailAgencyTools extends DefaultAgencyTools {
 	@Override
 	public String getAgencyName() {
 		return "Grand River Transit";
+	}
+
+	@NotNull
+	@Override
+	public Integer getOriginalAgencyRouteType() {
+		return GRouteType.TRAIN.getId(); // train in file
 	}
 
 	@NotNull
