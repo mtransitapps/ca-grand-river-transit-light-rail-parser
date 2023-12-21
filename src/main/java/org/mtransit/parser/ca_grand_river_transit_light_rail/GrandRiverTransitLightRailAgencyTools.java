@@ -67,7 +67,7 @@ public class GrandRiverTransitLightRailAgencyTools extends DefaultAgencyTools {
 
 	@Override
 	public boolean useRouteShortNameForRouteId() {
-		return true;
+		return false; // used for GTFS-RT
 	}
 
 	@NotNull
@@ -111,5 +111,10 @@ public class GrandRiverTransitLightRailAgencyTools extends DefaultAgencyTools {
 	@Override
 	public String getStopCode(@NotNull GStop gStop) {
 		return super.getStopCode(gStop); // used by real-time API
+	}
+
+	@Override
+	public int getStopId(@NotNull GStop gStop) {
+		return super.getStopId(gStop); // use for GTFS-RT
 	}
 }
